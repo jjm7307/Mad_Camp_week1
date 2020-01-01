@@ -231,21 +231,9 @@ public class FragmentTimer extends Fragment {
                             }
                             else {
 
-                                random = (int)(cValue*3);
+                                random = (int)(cValue*4);
                                 custom_image.setImageResource(arr3[random]);
                                 custom_text.setText(arr2[random]);
-                                /*if (random == 0){
-                                    custom_image.setImageResource(R.drawable.gift_yangsim);
-                                    custom_text.setText(arr2[0]);
-                                }
-                                else if (random ==1){
-                                    custom_image.setImageResource(R.drawable.gift_jungsung);
-                                    custom_text.setText(arr2[1]);
-                                }
-                                else {
-                                    custom_image.setImageResource(R.drawable.gift_coin);
-                                    custom_text.setText(arr2[2]);
-                                }*/
                             }
                             //custom dialogue 실행
                            // customeDialogue.show(getFragmentManager(), CustomeDialogue.TAG_EVENT_DIALOG);
