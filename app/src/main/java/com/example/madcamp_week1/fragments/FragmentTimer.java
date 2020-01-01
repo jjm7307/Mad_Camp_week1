@@ -53,8 +53,9 @@ public class FragmentTimer extends Fragment {
     AlertDialog.Builder builder;
     AlertDialog alertDialog;
 
-    int random;
-    double dValue;
+    int random, random2;
+    double dValue, cValue;
+    ImageView custom_image;
     TextView custom_text;
 
     String arr[] ={
@@ -67,6 +68,20 @@ public class FragmentTimer extends Fragment {
             "Pigeon poop burns the retina for 13 hours. You will learn this the hard way. ",
             "",""
     };
+    String arr2[] ={
+            "떨어뜨리셨길래 오다가 주워왔어요 :)",
+            "선물은 무엇보다 정성이 가장 중요하죠",
+            "돈으로도 살 수 없는게 있다고요? 에이, 돈이 부족해서 못 산거겠죠",
+            "행복은 성적순이 아니라던데... 믿으세요?",
+            "",""
+    };
+    int arr3[]={
+            R.drawable.gift_yangsim,
+            R.drawable.gift_jungsung,
+            R.drawable.gift_coin,
+            R.drawable.gift_hagjum
+    };
+
 
     private RelativeLayout container2;
 
@@ -77,6 +92,7 @@ public class FragmentTimer extends Fragment {
 
         builder = new AlertDialog.Builder(getActivity());
         final View layout = inflater.inflate(R.layout.activity_custome_dialogue, (ViewGroup)view.findViewById(R.id.layout_root));
+        custom_image = layout.findViewById(R.id.image_fortune);
         custom_text = layout.findViewById(R.id.text_fortune);
         ImageView button_share = layout.findViewById(R.id.button_share);
         ImageView button_screen_shot = layout.findViewById(R.id.button_screen_shot);
@@ -86,6 +102,7 @@ public class FragmentTimer extends Fragment {
         container2 = (RelativeLayout)layout.findViewById(R.id.layout_root);
 
         //dialog 초기 텍스트 설정
+        custom_image.setImageResource(R.drawable.icon_fortune_cookies2);
         custom_text.setText("HIHI");
         relative.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -205,9 +222,31 @@ public class FragmentTimer extends Fragment {
                         @Override
                         public void run() {
                             dValue = Math.random();
-                            random = (int)(dValue*7);
+                            cValue = Math.random();
+                            random2 = (int)(dValue*2);
+                            if(random2==0){
+                                random = (int)(cValue*7);
+                                custom_image.setImageResource(R.drawable.icon_fortune_cookies2);
+                                custom_text.setText(arr[random]);
+                            }
+                            else {
 
-                            custom_text.setText(arr[random]);
+                                random = (int)(cValue*3);
+                                custom_image.setImageResource(arr3[random]);
+                                custom_text.setText(arr2[random]);
+                                /*if (random == 0){
+                                    custom_image.setImageResource(R.drawable.gift_yangsim);
+                                    custom_text.setText(arr2[0]);
+                                }
+                                else if (random ==1){
+                                    custom_image.setImageResource(R.drawable.gift_jungsung);
+                                    custom_text.setText(arr2[1]);
+                                }
+                                else {
+                                    custom_image.setImageResource(R.drawable.gift_coin);
+                                    custom_text.setText(arr2[2]);
+                                }*/
+                            }
                             //custom dialogue 실행
                            // customeDialogue.show(getFragmentManager(), CustomeDialogue.TAG_EVENT_DIALOG);
                             alertDialog.show();
