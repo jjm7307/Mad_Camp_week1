@@ -1,5 +1,6 @@
 package com.example.madcamp_week1;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,7 +12,8 @@ import androidx.core.app.ActivityCompat;
 public class SplashActivity extends AppCompatActivity {
     String[] PERMISSIONS = {
             android.Manifest.permission.READ_CONTACTS,
-            android.Manifest.permission.READ_EXTERNAL_STORAGE
+            android.Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
 
     @Override

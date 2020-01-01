@@ -22,7 +22,7 @@
             app:tabPaddingBottom="5dp"
             android:paddingBottom="0dp"
             android:background="@drawable/radius_set"
-            app:tabTextColor="@color/white">
+            app:tabTextColor="#EEEEEE">
 
         </com.google.android.material.tabs.TabLayout>
 
