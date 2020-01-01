@@ -2,10 +2,23 @@ package com.example.madcamp_week1.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
+import android.os.Build;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,16 +29,21 @@ import com.example.madcamp_week1.R;
 import com.example.madcamp_week1.models.ModelContacts;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
-public class ContactsRvAdapter extends RecyclerView.Adapter<ContactsRvAdapter.ViewHolder> {
+public class ContactsRvAdapter extends RecyclerView.Adapter<ContactsRvAdapter.ViewHolder> implements Filterable {
 
     private Context mContext;
     private LayoutInflater inflater;
     private List<ModelContacts> mListContacts;
+    private List<ModelContacts> filteredContacts;
+
+    String _name;
 
     public ContactsRvAdapter(Context context, List<ModelContacts> listContacts) {
         mListContacts = listContacts;
+        filteredContacts = listContacts;
         mContext = context;
     }
     @NonNull
@@ -47,19 +65,57 @@ public class ContactsRvAdapter extends RecyclerView.Adapter<ContactsRvAdapter.Vi
         contact_number = holder.contact_number;
         contact_profile = holder.contact_profile;
 
-        if (mListContacts.get(position).getPhoto() != null){
-            contact_profile.setImageURI(Uri.parse(mListContacts.get(position).getPhoto()));
+        if (filteredContacts.get(position).getPhoto() != null){
+            contact_profile.setImageURI(Uri.parse(filteredContacts.get(position).getPhoto()));
         }
         else{
             contact_profile.setImageResource(R.drawable.icon_profile_red);
         }
-        contact_name.setText(mListContacts.get(position).getName());
-        contact_number.setText(mListContacts.get(position).getNumber());
+        contact_name.setText(filteredContacts.get(position).getName());
+        contact_number.setText(filteredContacts.get(position).getNumber());
     }
 
     @Override
     public int getItemCount() {
-        return mListContacts.size();
+        return filteredContacts.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String charString = constraint.toString();
+                if(charString.isEmpty()) {
+                    filteredContacts = mListContacts;
+                    Log.v("filter_ empty : ", " hi");
+                } else {
+                    ArrayList<ModelContacts> filteringList = new ArrayList<>();
+                    for(ModelContacts name : mListContacts) {
+                        _name = name.getName();
+                        if(_name.toLowerCase().contains(charString.toLowerCase())){
+                            Log.v("filter_ checking... : ", _name);
+                            //modelContact 객체 내부의 String _name 이 같으면 ModelContact name 을 filtering list 에 추가
+                            filteringList.add(name);
+                        }
+                    }
+                    filteredContacts = filteringList;
+                    Log.v("filtered list num : ", String.valueOf(filteredContacts.size()));
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = filteredContacts;
+
+                return filterResults;
+            }
+
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                filteredContacts = (ArrayList<ModelContacts>)results.values;
+                notifyDataSetChanged();
+                Log.v("filter_ changed complete : ", String.valueOf(filteredContacts.size()));
+            }
+        };
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

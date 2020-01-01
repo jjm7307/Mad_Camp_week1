@@ -102,7 +102,7 @@ public class FragmentTimer extends Fragment {
                 container2.buildDrawingCache();
                 Bitmap captureView = container2.getDrawingCache();
                 FileOutputStream fos;
-                String strFolderPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/CAPTURE";
+                String strFolderPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/DCIM/CAPTURE";
                 File folder = new File(strFolderPath);
                 if(!folder.exists()){
                     folder.mkdirs();
@@ -128,7 +128,7 @@ public class FragmentTimer extends Fragment {
                 container2.buildDrawingCache();
                 Bitmap captureView = container2.getDrawingCache();
                 FileOutputStream fos;
-                String strFolderPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/CAPTURE";
+                String strFolderPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/DCIM/CAPTURE";
                 File folder = new File(strFolderPath);
                 if(!folder.exists()){
                     folder.mkdirs();

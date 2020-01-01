@@ -4,9 +4,14 @@ import androidx.fragment.app.Fragment;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,14 +24,20 @@ import com.example.madcamp_week1.models.ModelContacts;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentContacts extends Fragment{
+public class FragmentContacts extends Fragment implements TextWatcher {
 
     private View v;
     private RecyclerView recyclerView;
-    private ContactsRvAdapter mAdapter;
-    public FragmentContacts(){
 
+    ContactsRvAdapter adapter;
+
+    EditText editText_search;
+    public FragmentContacts(){
     }
+
+    ImageView imageView_cancle;
+
+
 
     @Nullable
     @Override
@@ -34,15 +45,22 @@ public class FragmentContacts extends Fragment{
         v=inflater.inflate(R.layout.frag_contacts, container, false);
 
         recyclerView = v.findViewById(R.id.rv_contacts);
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-
         RecyclerView.LayoutManager layoutManager = linearLayoutManager;
-
         recyclerView.setLayoutManager(layoutManager);
 
-        ContactsRvAdapter adapter = new ContactsRvAdapter(getContext(),getContacts());
+        editText_search = v.findViewById(R.id.eidtText_search);
+        editText_search.addTextChangedListener(this);
 
+        imageView_cancle = v.findViewById(R.id.edittext_cancle_button);
+        imageView_cancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editText_search.setText("");
+            }
+        });
+
+        adapter = new ContactsRvAdapter(getContext(),getContacts());
         recyclerView.setAdapter(adapter);
 
         return v;
@@ -66,5 +84,21 @@ public class FragmentContacts extends Fragment{
             ));
         } while (cursor.moveToNext());
         return list;
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        adapter.getFilter().filter(s);
+        Log.v("filter_ start : ", " hi");
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+
     }
 }
